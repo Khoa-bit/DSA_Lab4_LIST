@@ -1,5 +1,8 @@
 package geom;
 
+import java.util.List;
+import java.util.ListIterator;
+
 public class Point2D {
     private double x;
     private double y;
@@ -68,5 +71,15 @@ public class Point2D {
 
     public double distanceTo(Point2D point2D) {
         return Math.sqrt(Math.pow((this.getX() - point2D.getX()), 2) + Math.pow((this.getY() - point2D.getY()), 2));
+    }
+
+    public static void removeHittedPoints(List<Point2D> list, Point2D testPoint, double radius) {
+        ListIterator<Point2D> listIterator = list.listIterator();
+        while (listIterator.hasNext()) {
+            Point2D item = listIterator.next();
+            if (item.distanceTo(testPoint) < radius) {
+                listIterator.remove();
+            }
+        }
     }
 }
