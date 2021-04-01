@@ -25,6 +25,19 @@ public class MyArrayList<E> implements List<E> {
         this(10);
     }
 
+    public MyArrayList(Collection<? extends E> c) {
+        E[] a = (E[]) c.toArray();
+        if ((size = a.length) != 0) {
+            if (c.getClass() == ArrayList.class) {
+                elements = a;
+            } else {
+                elements = (E[]) Arrays.copyOf(a, size, Object[].class);
+            }
+        } else {
+            elements = (E[]) new Object[10];
+        }
+    }
+
     //    Utilities
     private void checkValidIndex(int index, int min, int max) {
         if ((index < min) || (index > max)) {
@@ -154,6 +167,19 @@ public class MyArrayList<E> implements List<E> {
             }
         }
         return foundIndex;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("[");
+        for (int i = 0; i < size; i++) {
+            string.append(elements[i]);
+            string.append(", ");
+        }
+        string.delete(string.length() - 2, string.length());
+        string.append("]");
+        return string.toString();
     }
 
     @Override
