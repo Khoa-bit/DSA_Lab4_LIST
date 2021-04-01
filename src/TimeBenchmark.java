@@ -8,7 +8,8 @@ public class TimeBenchmark {
                 new Vector<Integer>()
         };
         List<Double> timeGet = new LinkedList<>();
-        List<Double> timeAdd = new LinkedList<>();
+        List<Double> timeAddStart = new LinkedList<>();
+        List<Double> timeAddEnd = new LinkedList<>();
 
         TimeBenchmark benchmark = new TimeBenchmark();
 
@@ -21,18 +22,26 @@ public class TimeBenchmark {
         }
         benchmark.clearAll(lists);
 
-//        Benchmark Add
+//        Benchmark Add Start
 //        50000 items and 1000 times
         for (List<Integer> list: lists) {
-            timeAdd.add(benchmark.benchmarkAdd(list, 50000, 10));
+            timeAddStart.add(benchmark.benchmarkAddStart(list, 50000, 10));
+        }
+
+//        Benchmark Add End
+//        50000 items and 1000 times
+        for (List<Integer> list: lists) {
+            timeAddEnd.add(benchmark.benchmarkAddEnd(list, 50000, 1000));
         }
         System.out.println("=====================LOG=====================\n");
 
         System.out.println("==================BENCHMARK==================\n");
-        System.out.printf("%-15s | %15s | %25s\n", "Implementation", "get(int index)", "add(int index, E element)");
-        System.out.println("-------------------------------------------------------------");
+        System.out.printf("%-15s | %15s | %25s | %15s\n",
+                "Implementation", "get(int index)", "add(int 0, E element)", "add(E element)");
+        System.out.println("-------------------------------------------------------------------------------");
         for (int i = 0; i < lists.length; i++) {
-            System.out.printf("%-15s | %15f | %25f\n", String.valueOf(lists[i].getClass()).substring(16), timeGet.get(i), timeAdd.get(i));
+            System.out.printf("%-15s | %15f | %25f | %15f\n",
+                    String.valueOf(lists[i].getClass()).substring(16), timeGet.get(i), timeAddStart.get(i), timeAddEnd.get(i));
         }
     }
 
@@ -66,14 +75,31 @@ public class TimeBenchmark {
         return timeElapsed / (nExec * 1000000);
     }
 
-    private double benchmarkAdd(List<Integer> list, int nElementMax, int nExec) {
+    private double benchmarkAddStart(List<Integer> list, int nElementMax, int nExec) {
         double timeElapsed = 0;
         for (int time = 0; time < nExec; time++) {
             long startTime = System.nanoTime();
 
-            System.out.printf("ADD - %-4d - %s\n", time, list.getClass());
+            System.out.printf("ADD START - %-4d - %s\n", time, list.getClass());
             for (int i = 0; i < nElementMax; i++) {
                 list.add(0, (int) ((Math.random() * 2 - 1) * nElementMax));
+            }
+            list.clear();
+
+            long endTime = System.nanoTime();
+            timeElapsed += (double) (endTime - startTime);
+        }
+        return timeElapsed / (nExec * 1000000);
+    }
+
+    private double benchmarkAddEnd(List<Integer> list, int nElementMax, int nExec) {
+        double timeElapsed = 0;
+        for (int time = 0; time < nExec; time++) {
+            long startTime = System.nanoTime();
+
+            System.out.printf("ADD END - %-4d - %s\n", time, list.getClass());
+            for (int i = 0; i < nElementMax; i++) {
+                list.add((int) ((Math.random() * 2 - 1) * nElementMax));
             }
             list.clear();
 
