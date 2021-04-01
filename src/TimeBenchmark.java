@@ -1,8 +1,11 @@
+import list.MyArrayList;
+
 import java.util.*;
 
 public class TimeBenchmark {
     public static void main(String[] args) {
         List[] lists = {
+                new MyArrayList<Integer>(),
                 new ArrayList<Integer>(),
                 new LinkedList<Integer>(),
                 new Vector<Integer>()
@@ -40,8 +43,9 @@ public class TimeBenchmark {
                 "Implementation", "get(int index)", "add(int 0, E element)", "add(E element)");
         System.out.println("-------------------------------------------------------------------------------");
         for (int i = 0; i < lists.length; i++) {
-            System.out.printf("%-15s | %15f | %25f | %15f\n",
-                    String.valueOf(lists[i].getClass()).substring(16), timeGet.get(i), timeAddStart.get(i), timeAddEnd.get(i));
+            StringBuilder stringBuilder = new StringBuilder(String.valueOf(lists[i].getClass()));
+            stringBuilder.delete(0, stringBuilder.lastIndexOf(".") + 1);
+            System.out.printf("%-15s | %15f | %25f | %15f\n", stringBuilder, timeGet.get(i), timeAddStart.get(i), timeAddEnd.get(i));
         }
     }
 
