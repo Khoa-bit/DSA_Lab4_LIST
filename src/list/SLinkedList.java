@@ -38,7 +38,7 @@ public class SLinkedList<E> implements List<E> {
         return curNode;
     }
 
-//    getNode: can return head
+    //    getNode: can return head
     private Node<E> getNode(int index) {
 //        Check Valid Index (including head)
         if ((index < -1) || (index >= size)) {
@@ -73,7 +73,7 @@ public class SLinkedList<E> implements List<E> {
         return removedNode;
     }
 
-//    Utilities
+    //    Utilities
     @Override
     public int size() {
         return size;
@@ -108,8 +108,8 @@ public class SLinkedList<E> implements List<E> {
     }
 
     private class MyIterator implements Iterator<E> {
-        Node<E> prev = head;
-        Node<E> cur = head.next;
+        Node<E> prev = SLinkedList.this.head;
+        Node<E> cur = prev.next;
         int cursor = 0;
         MoveType moveType = MoveType.NEXT;
         boolean afterMove = false;
@@ -155,7 +155,7 @@ public class SLinkedList<E> implements List<E> {
     public boolean add(E e) {
         Node<E> lastNode = tail.next;
         Node<E> newNode = new Node<>(null, e);
-        addAfter(lastNode , newNode);
+        addAfter(lastNode, newNode);
         return true;
     }
 
@@ -242,10 +242,19 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        return new MyListIterator(index);
     }
 
     private class MyListIterator extends MyIterator implements ListIterator<E> {
+        public MyListIterator() {
+        }
+
+        public MyListIterator(int index) {
+            SLinkedList.this.checkValidIndex(index);
+            prev = SLinkedList.this.getNode(index - 1);
+            cur = prev.next;
+            cursor = index;
+        }
 
         @Override
         public boolean hasPrevious() {
@@ -283,7 +292,7 @@ public class SLinkedList<E> implements List<E> {
         public void add(E e) {
             if (afterMove) {
                 Node<E> newNode = new Node<>(null, e);
-                addAfter(prev , newNode);
+                addAfter(prev, newNode);
             }
         }
 
