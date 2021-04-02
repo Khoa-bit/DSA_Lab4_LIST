@@ -21,7 +21,7 @@ public class TimeBenchmark {
         System.out.println("=====================LOG=====================");
 //        Benchmark Get
 //        10000 items and 1000 times
-        benchmark.generateAll(lists, 10000000);
+        benchmark.generateAll(lists, 1000000);
         for (List<Integer> list: lists) {
             timeGet.add(benchmark.benchmarkGet(list, 1000));
         }
@@ -30,13 +30,13 @@ public class TimeBenchmark {
 //        Benchmark Add Start
 //        50000 items and 1000 times
         for (List<Integer> list: lists) {
-            timeAddStart.add(benchmark.benchmarkAddStart(list, 50000, 30));
+            timeAddStart.add(benchmark.benchmarkAddStart(list, 50000, 20));
         }
 
 //        Benchmark Add End
 //        50000 items and 1000 times
         for (List<Integer> list: lists) {
-            timeAddEnd.add(benchmark.benchmarkAddEnd(list, 500000, 1000));
+            timeAddEnd.add(benchmark.benchmarkAddEnd(list, 50000, 1000));
         }
         System.out.println("=====================LOG=====================\n");
 
