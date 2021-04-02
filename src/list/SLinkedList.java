@@ -1,9 +1,6 @@
 package list;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class SLinkedList<E> implements List<E> {
     private enum MoveType {NEXT, PREV}
@@ -86,20 +83,25 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
+//        TODO: Implement indexOf(Object o)
         return false;
     }
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("[");
-        for (E element : this) {
-            string.append(element);
-            string.append(", ");
+        if (size != 0) {
+            StringBuilder string = new StringBuilder();
+            string.append("[");
+            for (E element : this) {
+                string.append(element);
+                string.append(", ");
+            }
+            string.delete(string.length() - 2, string.length());
+            string.append("]");
+            return string.toString();
+        } else {
+            return "[]";
         }
-        string.delete(string.length() - 2, string.length());
-        string.append("]");
-        return string.toString();
     }
 
     @Override
@@ -142,16 +144,6 @@ public class SLinkedList<E> implements List<E> {
     }
 
     @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
     public boolean add(E e) {
         Node<E> lastNode = tail.next;
         Node<E> newNode = new Node<>(null, e);
@@ -172,43 +164,30 @@ public class SLinkedList<E> implements List<E> {
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
     public void clear() {
-
+        for (Node<E> x = head; x != tail; ) {
+            Node<E> next = x.next;
+            x.element = null;
+            x.next = null;
+            x = next;
+        }
+        head.next = tail;
+        tail.next = head;
+        size = 0;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        checkValidIndex(index);
+        return getDataNode(index).element;
     }
 
     @Override
     public E set(int index, E element) {
-        return null;
+        checkValidIndex(index);
+        Node<E> node = getDataNode(index);
+        node.element = element;
+        return node.element;
     }
 
     @Override
@@ -227,12 +206,28 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+//        Bad implementation O(N^2)
+        Node<E> node;
+        for (int i = 0; i < size; i++) {
+            node = getNode(i);
+            if (node.equals(o)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+//        Bad implementation O(N^2)
+        Node<E> node;
+        for (int i = size - 1; i >= 0; i--) {
+            node = getNode(i);
+            if (node.equals(o)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -303,7 +298,42 @@ public class SLinkedList<E> implements List<E> {
     }
 
     @Override
+    public boolean containsAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -171,15 +171,19 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("[");
-        for (int i = 0; i < size; i++) {
-            string.append(elements[i]);
-            string.append(", ");
+        if (size != 0) {
+            StringBuilder string = new StringBuilder();
+            string.append("[");
+            for (int i = 0; i < size; i++) {
+                string.append(elements[i]);
+                string.append(", ");
+            }
+            string.delete(string.length() - 2, string.length());
+            string.append("]");
+            return string.toString();
+        } else {
+            return "[]";
         }
-        string.delete(string.length() - 2, string.length());
-        string.append("]");
-        return string.toString();
     }
 
     @Override
