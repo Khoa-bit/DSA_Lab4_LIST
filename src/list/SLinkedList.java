@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class SLinkedList<E> implements List<E> {
+    private enum MoveType {NEXT, PREV}
+
+    //    Internal data fields
     Node<E> head;
     Node<E> tail;
     int size;
@@ -66,6 +69,7 @@ public class SLinkedList<E> implements List<E> {
             tail.next = afterThis;
         }
         removedNode.next = null;
+        size -= 1;
         return removedNode;
     }
 
@@ -87,7 +91,39 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator<E> {
+        Node<E> prev;
+        Node<E> cur;
+        int cursor = 0;
+        boolean afterMove = false;
+
+        @Override
+        public boolean hasNext() {
+            return cursor != SLinkedList.this.size;
+        }
+
+        @Override
+        public E next() {
+            if (afterMove) {
+                prev = prev.next;
+            }
+            afterMove = true;
+            cur = cur.next;
+            cursor += 1;
+            return prev.next.element;
+        }
+
+        @Override
+        public void remove() {
+            if (afterMove) {
+                removeAfter(prev);
+                afterMove = false;
+                cursor -= 1;
+            }
+        }
     }
 
     @Override
