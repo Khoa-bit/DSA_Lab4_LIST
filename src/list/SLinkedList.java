@@ -83,8 +83,7 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-//        TODO: Implement indexOf(Object o)
-        return false;
+        return indexOf(o) != -1;
     }
 
     @Override
