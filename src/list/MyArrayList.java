@@ -72,7 +72,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-        return indexOf(0) >= 0;
+        return indexOf(o) >= 0;
     }
 
     @Override
