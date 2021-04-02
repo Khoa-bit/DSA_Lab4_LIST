@@ -6,6 +6,49 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class SLinkedList<E> implements List<E> {
+    Node<E> head;
+    Node<E> tail;
+    int size;
+
+    public SLinkedList() {
+        head = new Node<>(null, null);
+        tail = new Node<>(null, null);
+        head.next = tail;
+        tail.next = head;
+        size = 0;
+    }
+
+    //    Utilities (Private)
+    private void checkValidIndex(int index) {
+        if ((index < 0) || (index >= size)) {
+            String message = String.format("Invalid index (=%d)", index);
+            throw new IndexOutOfBoundsException(message);
+        }
+    }
+
+    private Node<E> getDataNode(int index) {
+        checkValidIndex(index);
+        Node<E> curNode = head.next;
+        for (int i = 0; i < index; i++) {
+            curNode = curNode.next;
+        }
+        return curNode;
+    }
+
+    //getNode: can return head
+    private Node<E> getNode(int index) {
+//        Check Valid Index (including head)
+        if ((index < -1) || (index >= size)) {
+            String message = String.format("Invalid index (including head) (=%d)", index);
+            throw new IndexOutOfBoundsException(message);
+        }
+//        Get Node
+        Node<E> curNode = head;
+        for (int i = -1; i < index; i++) {
+            curNode = curNode.next;
+        }
+        return curNode;
+    }
 
     @Override
     public int size() {
