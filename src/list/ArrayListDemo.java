@@ -6,10 +6,15 @@ import java.util.ListIterator;
 
 public class ArrayListDemo {
     public static void main(String[] args) {
-//        List Iterator method
+        List<Integer> list = new ArrayList<>();
+        demo(list);
+    }
+
+    public static void demo(List<Integer> list) {
+        //        List Iterator method
+
         System.out.println("-----------List Iterator method-----------");
 
-        List<Integer> list = new ArrayList<>();
         for (int idx = 0; idx < 10; idx++) {
             list.add(idx);
         }

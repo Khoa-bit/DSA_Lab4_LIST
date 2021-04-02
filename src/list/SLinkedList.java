@@ -10,12 +10,29 @@ public class SLinkedList<E> implements List<E> {
     Node<E> tail;
     int size;
 
+//    Constructors
     public SLinkedList() {
         head = new Node<>(null, null);
         tail = new Node<>(null, null);
         head.next = tail;
         tail.next = head;
         size = 0;
+    }
+
+    public SLinkedList(Collection<? extends E> c) {
+        Object[] a = c.toArray();
+
+        head = new Node<>(null, null);
+        tail = new Node<>(null, null);
+        head.next = tail;
+        tail.next = head;
+
+        for (Object o : a) {
+            @SuppressWarnings("unchecked") E e = (E) o;
+            add(e);
+        }
+
+        size = c.size();
     }
 
     //    Utilities (Private)
@@ -27,7 +44,6 @@ public class SLinkedList<E> implements List<E> {
     }
 
     private Node<E> getDataNode(int index) {
-        checkValidIndex(index);
         Node<E> curNode = head.next;
         for (int i = 0; i < index; i++) {
             curNode = curNode.next;
@@ -144,9 +160,13 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        Node<E> lastNode = tail.next;
         Node<E> newNode = new Node<>(null, e);
-        addAfter(lastNode, newNode);
+
+        tail.next.next = newNode;
+        newNode.next = tail;
+        tail.next = newNode;
+        size += 1;
+
         return true;
     }
 
@@ -191,6 +211,12 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
+//        Check valid index to include max size
+        if ((index < 0) || (index > size)) {
+            String message = String.format("Invalid index (=%d)", index);
+            throw new IndexOutOfBoundsException(message);
+        }
+
         Node<E> prevNode = getNode(index - 1);
         Node<E> newNode = new Node<>(null, element);
         addAfter(prevNode, newNode);

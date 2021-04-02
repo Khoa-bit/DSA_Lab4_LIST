@@ -1,13 +1,15 @@
 import list.MyArrayList;
+import list.SLinkedList;
 
 import java.util.*;
 
 public class TimeBenchmark {
     public static void main(String[] args) {
         List[] lists = {
-                new MyArrayList<Integer>(),
                 new ArrayList<Integer>(),
+                new MyArrayList<Integer>(),
                 new LinkedList<Integer>(),
+                new SLinkedList<Integer>(),
                 new Vector<Integer>()
         };
         List<Double> timeGet = new LinkedList<>();
@@ -19,7 +21,7 @@ public class TimeBenchmark {
         System.out.println("=====================LOG=====================");
 //        Benchmark Get
 //        10000 items and 1000 times
-        benchmark.generateAll(lists, 1000000);
+        benchmark.generateAll(lists, 10000000);
         for (List<Integer> list: lists) {
             timeGet.add(benchmark.benchmarkGet(list, 1000));
         }
@@ -28,13 +30,13 @@ public class TimeBenchmark {
 //        Benchmark Add Start
 //        50000 items and 1000 times
         for (List<Integer> list: lists) {
-            timeAddStart.add(benchmark.benchmarkAddStart(list, 50000, 10));
+            timeAddStart.add(benchmark.benchmarkAddStart(list, 50000, 30));
         }
 
 //        Benchmark Add End
 //        50000 items and 1000 times
         for (List<Integer> list: lists) {
-            timeAddEnd.add(benchmark.benchmarkAddEnd(list, 50000, 1000));
+            timeAddEnd.add(benchmark.benchmarkAddEnd(list, 500000, 1000));
         }
         System.out.println("=====================LOG=====================\n");
 
