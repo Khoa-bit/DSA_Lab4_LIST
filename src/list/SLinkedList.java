@@ -50,6 +50,16 @@ public class SLinkedList<E> implements List<E> {
         return curNode;
     }
 
+    private void addAfter(Node<E> afterThis, Node<E> newNode) {
+        newNode.next = afterThis.next;
+        afterThis.next = newNode;
+        if (newNode.next == tail) {
+            tail.next = newNode;
+        }
+        size += 1;
+    }
+
+//    Utilities
     @Override
     public int size() {
         return 0;
@@ -82,7 +92,10 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        return false;
+        Node<E> lastNode = tail.next;
+        Node<E> newNode = new Node<>(null, e);
+        addAfter(lastNode , newNode);
+        return true;
     }
 
     @Override
@@ -132,7 +145,9 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-
+        Node<E> prevNode = getNode(index - 1);
+        Node<E> newNode = new Node<>(null, element);
+        addAfter(prevNode, newNode);
     }
 
     @Override
