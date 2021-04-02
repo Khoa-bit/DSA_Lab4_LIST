@@ -35,7 +35,7 @@ public class SLinkedList<E> implements List<E> {
         return curNode;
     }
 
-    //getNode: can return head
+//    getNode: can return head
     private Node<E> getNode(int index) {
 //        Check Valid Index (including head)
         if ((index < -1) || (index >= size)) {
@@ -57,6 +57,16 @@ public class SLinkedList<E> implements List<E> {
             tail.next = newNode;
         }
         size += 1;
+    }
+
+    private Node<E> removeAfter(Node<E> afterThis) {
+        Node<E> removedNode = afterThis.next;
+        afterThis.next = removedNode.next;
+        if (removedNode.next == tail) {
+            tail.next = afterThis;
+        }
+        removedNode.next = null;
+        return removedNode;
     }
 
 //    Utilities
@@ -100,7 +110,14 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        Node<E> prev = head;
+        Node<E> cur = head.next;
+        while (cur != tail && !cur.equals(o)) {
+            prev = cur;
+            cur = cur.next;
+        }
+        removeAfter(prev);
+        return true;
     }
 
     @Override
@@ -152,7 +169,9 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        return null;
+        checkValidIndex(index);
+        Node<E> prevNode = getNode(index - 1);
+        return removeAfter(prevNode).element;
     }
 
     @Override
