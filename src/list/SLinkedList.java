@@ -76,12 +76,12 @@ public class SLinkedList<E> implements List<E> {
 //    Utilities
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
@@ -90,14 +90,28 @@ public class SLinkedList<E> implements List<E> {
     }
 
     @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("[");
+        for (E element : this) {
+            string.append(element);
+            string.append(", ");
+        }
+        string.delete(string.length() - 2, string.length());
+        string.append("]");
+        return string.toString();
+    }
+
+    @Override
     public Iterator<E> iterator() {
         return new MyIterator();
     }
 
     private class MyIterator implements Iterator<E> {
-        Node<E> prev;
-        Node<E> cur;
+        Node<E> prev = head;
+        Node<E> cur = head.next;
         int cursor = 0;
+        MoveType moveType = MoveType.NEXT;
         boolean afterMove = false;
 
         @Override
@@ -110,6 +124,7 @@ public class SLinkedList<E> implements List<E> {
             if (afterMove) {
                 prev = prev.next;
             }
+            moveType = MoveType.NEXT;
             afterMove = true;
             cur = cur.next;
             cursor += 1;
@@ -222,12 +237,60 @@ public class SLinkedList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return null;
+        return new MyListIterator();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
         return null;
+    }
+
+    private class MyListIterator extends MyIterator implements ListIterator<E> {
+
+        @Override
+        public boolean hasPrevious() {
+            return cursor != 0;
+        }
+
+        @Override
+        public E previous() {
+            moveType = MoveType.PREV;
+            afterMove = true;
+            prev = SLinkedList.this.getNode(cursor - 2);
+            cur = prev.next;
+            cursor -= 1;
+            return cur.element;
+        }
+
+        @Override
+        public int nextIndex() {
+            return cursor;
+        }
+
+        @Override
+        public int previousIndex() {
+            return cursor - 1;
+        }
+
+        @Override
+        public void set(E element) {
+            if (afterMove) {
+                prev.next.element = element;
+            }
+        }
+
+        @Override
+        public void add(E e) {
+            if (afterMove) {
+                Node<E> newNode = new Node<>(null, e);
+                addAfter(prev , newNode);
+            }
+        }
+
+        @Override
+        public void remove() {
+            super.remove();
+        }
     }
 
     @Override
